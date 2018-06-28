@@ -15,5 +15,4 @@ dependencies {
 	testCompile "junit:junit:4.11"
 }
 
-//apply from: '../gradle/sonatype.gradle'
-//apply from: '../gradle/artifactory.gradle'
+apply from: '../gradle/sonatype.gradle'

@@ -13,8 +13,5 @@ buildscript {
 allprojects {
 	repositories {
 		jcenter()
-		maven {
-			url 'http://oss.3sidedcube.com:8081/artifactory/internal'
-		}
 	}
 }
