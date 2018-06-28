@@ -1,15 +1,17 @@
 package net.callumtaylor.geojson.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.callumtaylor.geojson.GeoJson;
 import net.callumtaylor.geojson.GeoJsonObject;
-import com.google.gson.Gson;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class GeoJsonObjectTest
 {
-	private Gson mapper = GeoJson.getGson();
+	private Gson mapper = GeoJson.registerAdapters(new GsonBuilder()).create();
 
 	private class TestGeoJsonObject extends GeoJsonObject
 	{

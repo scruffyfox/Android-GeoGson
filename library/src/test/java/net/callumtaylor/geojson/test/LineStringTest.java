@@ -1,6 +1,7 @@
 package net.callumtaylor.geojson.test;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import net.callumtaylor.geojson.GeoJson;
 import net.callumtaylor.geojson.LineString;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class LineStringTest
 {
-	private Gson mapper = GeoJson.getGson();
+	private Gson mapper = GeoJson.registerAdapters(new GsonBuilder()).create();
 
 	@Test
 	public void itShouldSerializeMultiPoint() throws Exception
