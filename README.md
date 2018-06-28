@@ -47,7 +47,7 @@ This will automatically parse the provided JSON string into its correct class (i
 To include the project, add the following to your `build.gradle`
 
 ```
-compile 'net.callumtaylor:GeoGson:1.6'
+compile 'net.callumtaylor:geogson:1.0'
 ```
 
 ## License
