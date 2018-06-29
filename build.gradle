@@ -6,15 +6,12 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.2.3'
+		classpath 'com.android.tools.build:gradle:2.0.0'
 	}
 }
 
 allprojects {
 	repositories {
 		jcenter()
-		maven {
-			url 'http://oss.3sidedcube.com:8081/artifactory/internal'
-		}
 	}
 }
