@@ -4,5 +4,5 @@ open class MultiPolygon : Geometry<List<List<LngLatAlt>>>()
 {
 	init { type = "MultiPolygon" }
 
-	operator fun contains(point: Point): Boolean = coordinates.any { GeoJson.pointInPolygon(it, point) }
+	operator fun contains(point: Point): Boolean = coordinates.any { GeoGson.pointInPolygon(it, point) }
 }

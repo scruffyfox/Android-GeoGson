@@ -47,5 +47,5 @@ open class Polygon : Geometry<List<LngLatAlt>>
 		}
 	}
 
-	operator fun contains(point: Point): Boolean = GeoJson.pointInPolygon(coordinates, point)
+	operator fun contains(point: Point): Boolean = GeoGson.pointInPolygon(coordinates, point)
 }
