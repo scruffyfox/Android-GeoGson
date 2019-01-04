@@ -13,9 +13,6 @@ import net.callumtaylor.geojson.Polygon
 import org.junit.Assert
 import org.junit.Test
 
-
-
-
 public class GeoJsonObjectTest
 {
 	private val mapper = GeoGson.registerAdapters(GsonBuilder()).create()
