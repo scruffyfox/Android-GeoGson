@@ -1,10 +1,10 @@
 package net.callumtaylor.geojson
 
-import java.util.*
+import java.util.ArrayList
 
 open class Geometry<T> : GeoJsonObject
 {
-	protected val coordinates: ArrayList<T> = arrayListOf<T>()
+	public val coordinates: ArrayList<T> = arrayListOf<T>()
 
 	init { type = "Geometry" }
 

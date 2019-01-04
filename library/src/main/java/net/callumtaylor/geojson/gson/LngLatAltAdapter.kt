@@ -1,6 +1,13 @@
 package net.callumtaylor.geojson.gson
 
-import com.google.gson.*
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonParseException
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import net.callumtaylor.geojson.LngLatAlt
 import java.lang.reflect.Type
 
@@ -30,7 +37,7 @@ open class LngLatAltAdapter : JsonSerializer<LngLatAlt>, JsonDeserializer<LngLat
 
 		node.longitude = data.get(0).asDouble
 		node.latitude = data.get(1).asDouble
-		node.altitude = data.get(2)?.asDouble ?: Double.NaN
+		node.altitude = if (data.size() == 3) data.get(2)?.asDouble ?: Double.NaN else Double.NaN
 
 		return node
 	}

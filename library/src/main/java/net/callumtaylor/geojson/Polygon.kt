@@ -1,13 +1,13 @@
 package net.callumtaylor.geojson
 
-import java.util.*
+import java.util.Arrays
 
 open class Polygon : Geometry<List<LngLatAlt>>
 {
 	init { type = "Polygon" }
 
 	constructor()
-	constructor(vararg polygon: List<LngLatAlt>): super(*polygon)
+	constructor(polygon: List<LngLatAlt>): super(polygon)
 
 	fun getExteriorRing(): List<LngLatAlt>
 	{

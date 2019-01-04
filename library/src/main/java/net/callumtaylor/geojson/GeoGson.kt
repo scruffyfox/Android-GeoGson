@@ -37,7 +37,7 @@ object GeoGson
 		{
 			for (i in 1 until coordinate.size)
 			{
-				val (longitude, latitude) = coordinate[i - 1]
+				val v1 = coordinate[i - 1]
 				val v2 = coordinate[i]
 
 				if (point.coordinates == v2)
@@ -45,21 +45,21 @@ object GeoGson
 					return true
 				}
 
-				if (latitude == v2.latitude
-					&& latitude == point.coordinates.latitude
-					&& point.coordinates.longitude > (if (longitude > v2.longitude) v2.longitude else longitude)
-					&& point.coordinates.longitude < if (longitude < v2.longitude) v2.longitude else longitude)
+				if (v1.latitude == v2.latitude
+					&& v1.latitude == point.coordinates.latitude
+					&& point.coordinates.longitude > (if (v1.longitude > v2.longitude) v2.longitude else v1.longitude)
+					&& point.coordinates.longitude < if (v1.longitude < v2.longitude) v2.longitude else v1.longitude)
 				{
 					// Is horizontal polygon boundary
 					return true
 				}
 
-				if (point.coordinates.latitude > (if (latitude < v2.latitude) latitude else v2.latitude)
-					&& point.coordinates.latitude <= (if (latitude < v2.latitude) v2.latitude else latitude)
-					&& point.coordinates.longitude <= (if (longitude < v2.longitude) v2.longitude else longitude)
-					&& latitude != v2.latitude)
+				if (point.coordinates.latitude > (if (v1.latitude < v2.latitude) v1.latitude else v2.latitude)
+					&& point.coordinates.latitude <= (if (v1.latitude < v2.latitude) v2.latitude else v1.latitude)
+					&& point.coordinates.longitude <= (if (v1.longitude < v2.longitude) v2.longitude else v1.longitude)
+					&& v1.latitude != v2.latitude)
 				{
-					val intersection = (point.coordinates.latitude - latitude) * (v2.longitude - longitude) / (v2.latitude - latitude) + longitude
+					val intersection = (point.coordinates.latitude - v1.latitude) * (v2.longitude - v1.longitude) / (v2.latitude - v1.latitude) + v1.longitude
 
 					if (intersection == point.coordinates.longitude)
 					{
@@ -67,7 +67,7 @@ object GeoGson
 						return true
 					}
 
-					if (longitude == v2.longitude || point.coordinates.longitude <= intersection)
+					if (v1.longitude == v2.longitude || point.coordinates.longitude <= intersection)
 					{
 						intersections++
 					}
