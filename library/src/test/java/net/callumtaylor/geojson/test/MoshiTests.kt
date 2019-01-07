@@ -31,6 +31,9 @@ public class MoshiTests
 	{
 		val point = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"Point\",\"coordinates\":[100.0,5.0]}")
 		Assert.assertTrue(point is Point)
+
+		val circle = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"Circle\",\"coordinates\":[100.0,5.0],\"radius\":1000.0}")
+		Assert.assertNotNull(circle)
 	}
 
 	@Test
