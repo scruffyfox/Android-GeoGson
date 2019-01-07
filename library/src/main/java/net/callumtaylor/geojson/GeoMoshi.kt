@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import net.callumtaylor.geojson.moshi.CircleJsonAdapter
 import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter
 import net.callumtaylor.geojson.moshi.LngLatAltMoshiAdapter
+import net.callumtaylor.geojson.moshi.MultiPointJsonAdapter
 import net.callumtaylor.geojson.moshi.PointJsonAdapter
 
 /**
@@ -19,6 +20,7 @@ object GeoMoshi
 	{
 		builder.add(Point::class.java, PointJsonAdapter())
 		builder.add(Circle::class.java, CircleJsonAdapter())
+		builder.add(MultiPoint::class.java, MultiPointJsonAdapter())
 		builder.add(GeoJsonObject::class.java, GeoJsonObjectMoshiAdapter())
 		builder.add(LngLatAlt::class.java, LngLatAltMoshiAdapter())
 		return builder

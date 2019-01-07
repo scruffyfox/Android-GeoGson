@@ -7,6 +7,7 @@ import net.callumtaylor.geojson.GeoGson
 import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.GeoMoshi
 import net.callumtaylor.geojson.LngLatAlt
+import net.callumtaylor.geojson.MultiPoint
 import net.callumtaylor.geojson.Point
 import org.junit.Assert
 import org.junit.Test
@@ -34,6 +35,9 @@ public class MoshiTests
 
 		val circle = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"Circle\",\"coordinates\":[100.0,5.0],\"radius\":1000.0}")
 		Assert.assertNotNull(circle)
+
+		val multiPoint = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}")
+		Assert.assertTrue(multiPoint is MultiPoint)
 	}
 
 	@Test
@@ -149,16 +153,17 @@ public class MoshiTests
 //		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", gson.toJson(multiPoint))
 //	}
 //
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldDeserializeMultiPoint()
-//	{
-//		val multiPoint = gson.fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", MultiPoint::class.java)
-//		Assert.assertNotNull(multiPoint)
-//		val coordinates = multiPoint.coordinates
-//		assertLngLatAlt(100.0, 0.0, java.lang.Double.NaN, coordinates[0])
-//		assertLngLatAlt(101.0, 1.0, java.lang.Double.NaN, coordinates[1])
-//	}
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeMultiPoint()
+	{
+		val multiPoint = moshi.adapter(MultiPoint::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}")
+		Assert.assertTrue(multiPoint is MultiPoint)
+		Assert.assertNotNull(multiPoint)
+		val coordinates = multiPoint!!.coordinates
+		assertLngLatAlt(100.0, 0.0, null, coordinates[0])
+		assertLngLatAlt(101.0, 1.0, null, coordinates[1])
+	}
 //
 //	@Test
 //	@Throws(Exception::class)
