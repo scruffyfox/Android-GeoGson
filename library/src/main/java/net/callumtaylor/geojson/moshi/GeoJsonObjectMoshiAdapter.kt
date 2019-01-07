@@ -3,34 +3,24 @@ package net.callumtaylor.geojson.moshi
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import net.callumtaylor.geojson.Circle
-import net.callumtaylor.geojson.Feature
-import net.callumtaylor.geojson.FeatureCollection
 import net.callumtaylor.geojson.GeoJsonObject
-import net.callumtaylor.geojson.GeometryCollection
-import net.callumtaylor.geojson.LineString
-import net.callumtaylor.geojson.MultiLineString
-import net.callumtaylor.geojson.MultiPoint
-import net.callumtaylor.geojson.MultiPolygon
-import net.callumtaylor.geojson.Point
-import net.callumtaylor.geojson.Polygon
 import java.util.HashMap
 
 open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 {
 	companion object
 	{
-		private val types = mapOf(
-			"Circle" to Circle::class.java,
-			"Feature" to Feature::class.java,
-			"FeatureCollection" to FeatureCollection::class.java,
-			"GeometryCollection" to GeometryCollection::class.java,
-			"LineString" to LineString::class.java,
-			"MultiLineString" to MultiLineString::class.java,
-			"Point" to Point::class.java,
-			"MultiPoint" to MultiPoint::class.java,
-			"Polygon" to Polygon::class.java,
-			"MultiPolygon" to MultiPolygon::class.java
+		private val types = mapOf<String, JsonAdapter<*>>(
+//			"Circle" to Circle::class.java,
+//			"Feature" to Feature::class.java,
+//			"FeatureCollection" to FeatureCollection::class.java,
+//			"GeometryCollection" to GeometryCollection::class.java,
+//			"LineString" to LineString::class.java,
+//			"MultiLineString" to MultiLineString::class.java,
+			"Point" to PointJsonAdapter()
+//			"MultiPoint" to MultiPoint::class.java,
+//			"Polygon" to Polygon::class.java,
+//			"MultiPolygon" to MultiPolygon::class.java
 		)
 
 		public val OPTIONS: JsonReader.Options = JsonReader.Options.of("type", "coordinates", "bbox", "properties", "foreign")
@@ -38,37 +28,29 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 
 	override fun fromJson(reader: JsonReader): GeoJsonObject?
 	{
-//		var properties: Map<*, *>? = null
-//		var foreign: HashMap<String, Any?> = hashMapOf<String, Any?>()
-//		var bbox: Array<Double>? = null
-//
-//		reader.beginObject()
-//		while (reader.hasNext())
-//		{
-//			when (reader.selectName(OPTIONS))
-//			{
-//				0, 1 -> {
-//					reader.skipName()
-//					reader.skipValue()
-//				}
-//				2 -> bbox = reader.readJsonValue() as Array<Double>?
-//				3 -> properties = reader.readJsonValue() as Map<*, *>?
-//				-1 -> {
-//					val name = reader.nextName()
-//					val value = reader.readJsonValue()
-//					foreign[name] = value
-//				}
-//			}
-//		}
-//
-//		reader.endObject()
+		var type = ""
+		val dataReader = reader.peekJson()
+		reader.beginObject()
+		read@ while (reader.hasNext())
+		{
+			when (reader.selectName(OPTIONS))
+			{
+				0 -> {
+					type = reader.nextString()
+				}
+				else -> {
+					if (reader.peek() == JsonReader.Token.NAME)
+					{
+						reader.skipName()
+					}
 
-		val geoObj: GeoJsonObject = GeoJsonObject()
-//		geoObj.properties = properties as HashMap<*, *>?
-//		geoObj.foreign = if (foreign.isEmpty()) null else foreign
-//		geoObj.bbox = bbox
+					reader.skipValue()
+				}
+			}
+		}
 
-		return geoObj
+		reader.endObject()
+		return types[type]?.fromJson(dataReader) as GeoJsonObject?
 	}
 
 	override fun toJson(writer: JsonWriter, value: GeoJsonObject?)

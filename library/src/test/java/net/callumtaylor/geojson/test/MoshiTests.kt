@@ -3,6 +3,7 @@ package net.callumtaylor.geojson.test
 import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 import net.callumtaylor.geojson.GeoGson
+import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.GeoMoshi
 import net.callumtaylor.geojson.LngLatAlt
 import net.callumtaylor.geojson.Point
@@ -22,6 +23,14 @@ public class MoshiTests
 //		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", gson.toJson(point))
 ////		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", moshi.adapter(GeoJsonObject::class.java).toJson(point))
 //	}
+
+	@Test
+	@Throws(Exception::class)
+	fun intelligentDeserialisation()
+	{
+		val point = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"Point\",\"coordinates\":[100.0,5.0]}")
+		Assert.assertTrue(point is Point)
+	}
 
 	@Test
 	@Throws(Exception::class)
