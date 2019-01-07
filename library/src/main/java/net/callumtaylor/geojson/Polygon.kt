@@ -1,33 +1,33 @@
 package net.callumtaylor.geojson
 
-import java.util.Arrays
-
-open class Polygon : Geometry<List<LngLatAlt>>
+open class Polygon() : Geometry<ArrayList<LngLatAlt>>()
 {
 	init { type = "Polygon" }
 
-	constructor()
-	constructor(polygon: List<LngLatAlt>): super(polygon)
+	constructor(polygon: ArrayList<LngLatAlt>): this()
+	{
+		this.coordinates.add(polygon)
+	}
 
-	fun getExteriorRing(): List<LngLatAlt>
+	fun getExteriorRing(): ArrayList<LngLatAlt>
 	{
 		assertExteriorRing()
 		return coordinates[0]
 	}
 
-	fun getInteriorRings(): List<List<LngLatAlt>>
+	fun getInteriorRings(): ArrayList<ArrayList<LngLatAlt>>
 	{
 		assertExteriorRing()
-		return coordinates.subList(1, coordinates.size)
+		return ArrayList(coordinates.subList(1, coordinates.size))
 	}
 
-	fun getInteriorRing(index: Int): List<LngLatAlt>
+	fun getInteriorRing(index: Int): ArrayList<LngLatAlt>
 	{
 		assertExteriorRing()
 		return coordinates[1 + index]
 	}
 
-	fun addInteriorRing(points: List<LngLatAlt>)
+	fun addInteriorRing(points: ArrayList<LngLatAlt>)
 	{
 		assertExteriorRing()
 		coordinates.add(points)
@@ -36,7 +36,7 @@ open class Polygon : Geometry<List<LngLatAlt>>
 	fun addInteriorRing(vararg points: LngLatAlt)
 	{
 		assertExteriorRing()
-		coordinates.add(Arrays.asList(*points))
+		coordinates.add(arrayListOf(*points))
 	}
 
 	private fun assertExteriorRing()

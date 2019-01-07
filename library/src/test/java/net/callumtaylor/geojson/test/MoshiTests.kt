@@ -9,6 +9,7 @@ import net.callumtaylor.geojson.LngLatAlt
 import net.callumtaylor.geojson.MultiLineString
 import net.callumtaylor.geojson.MultiPoint
 import net.callumtaylor.geojson.Point
+import net.callumtaylor.geojson.Polygon
 import org.junit.Assert
 import org.junit.Test
 
@@ -43,6 +44,9 @@ public class MoshiTests
 
 		val multiLineString = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"MultiLineString\",\"coordinates\":[[[100,0],[101,1]],[[102,2],[103,3]]]}")
 		Assert.assertTrue(multiLineString is MultiLineString)
+
+		val polygon = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[],\"type\":\"Polygon\"}")
+		Assert.assertTrue(polygon is Polygon)
 	}
 
 	@Test
@@ -286,26 +290,28 @@ public class MoshiTests
 //			LngLatAlt(100.0, 0.0)))
 //	}
 //
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldDeserializePolygon()
-//	{
-//		val polygon = gson.fromJson("{\"coordinates\":"
-//			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
-//			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]],\"type\":\"Polygon\"}", Polygon::class.java)
-//		assertListEquals(arrayListOf(
-//			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
-//			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-//			LngLatAlt(100.0, 0.0)), polygon.getExteriorRing())
-//		assertListEquals(arrayListOf(
-//			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-//			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-//			LngLatAlt(100.2, 0.2)), polygon.getInteriorRing(0))
-//		assertListEquals(arrayListOf(
-//			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-//			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-//			LngLatAlt(100.2, 0.2)), polygon.getInteriorRings()[0])
-//	}
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializePolygon()
+	{
+		val polygon = moshi.adapter(Polygon::class.java).fromJson("{\"coordinates\":"
+			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
+			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]],\"type\":\"Polygon\"}")
+		Assert.assertNotNull(polygon)
+		Assert.assertTrue(polygon is Polygon)
+		assertListEquals(arrayListOf(
+			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
+			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
+			LngLatAlt(100.0, 0.0)), polygon!!.getExteriorRing())
+		assertListEquals(arrayListOf(
+			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
+			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
+			LngLatAlt(100.2, 0.2)), polygon.getInteriorRing(0))
+		assertListEquals(arrayListOf(
+			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
+			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
+			LngLatAlt(100.2, 0.2)), polygon.getInteriorRings()[0])
+	}
 
 	private fun assertListEquals(expectedList: List<LngLatAlt>, actualList: List<LngLatAlt>)
 	{
