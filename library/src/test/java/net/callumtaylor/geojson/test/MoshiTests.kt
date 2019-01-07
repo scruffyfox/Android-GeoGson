@@ -6,6 +6,7 @@ import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.GeoMoshi
 import net.callumtaylor.geojson.LineString
 import net.callumtaylor.geojson.LngLatAlt
+import net.callumtaylor.geojson.MultiLineString
 import net.callumtaylor.geojson.MultiPoint
 import net.callumtaylor.geojson.Point
 import org.junit.Assert
@@ -39,6 +40,9 @@ public class MoshiTests
 
 		val lineString = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}")
 		Assert.assertTrue(lineString is LineString)
+
+		val multiLineString = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"type\":\"MultiLineString\",\"coordinates\":[[[100,0],[101,1]],[[102,2],[103,3]]]}")
+		Assert.assertTrue(multiLineString is MultiLineString)
 	}
 
 	@Test
@@ -135,6 +139,38 @@ public class MoshiTests
 			assertLngLatAlt(101.0, 1.0, null, coordinates[1])
 		}
 	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeMultiLineString()
+	{
+		val multiLineString = moshi.adapter(MultiLineString::class.java).fromJson("""
+			{
+				"type": "MultiLineString",
+				"coordinates": [
+				 	[
+						[100.0, 0.0],
+						[101.0, 1.0]
+					],
+					[
+						[102.0, 2.0],
+						[103.0, 3.0]
+					]
+				]
+			}
+		""")
+		Assert.assertNotNull(multiLineString)
+		Assert.assertTrue(multiLineString is MultiLineString)
+
+		with (multiLineString as MultiLineString) {
+			val coordinates = multiLineString.coordinates
+			assertLngLatAlt(100.0, 0.0, null, coordinates[0][0])
+			assertLngLatAlt(101.0, 1.0, null, coordinates[0][1])
+			assertLngLatAlt(102.0, 2.0, null, coordinates[1][0])
+			assertLngLatAlt(103.0, 3.0, null, coordinates[1][1])
+		}
+	}
+
 //
 //	@Test
 //	@Throws(Exception::class)

@@ -1,9 +1,11 @@
 package net.callumtaylor.geojson
 
-open class MultiLineString : Geometry<List<LngLatAlt>>
+open class MultiLineString() : Geometry<ArrayList<LngLatAlt>>()
 {
 	init { type = "MultiLineString" }
 
-	constructor()
-	constructor(vararg line: List<LngLatAlt>): super(*line)
+	constructor(vararg line: ArrayList<LngLatAlt>): this()
+	{
+		this.coordinates = arrayListOf(*line)
+	}
 }
