@@ -10,7 +10,8 @@ compileJava {
 }
 
 dependencies {
-	compile "com.google.code.gson:gson:2.8.5"
+	implementation "com.google.code.gson:gson:2.8.5"
+	implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
 
 	testCompile 'junit:junit:4.12'
 	testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

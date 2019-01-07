@@ -1,11 +1,17 @@
 package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 open class Feature : GeoJsonObject()
 {
-	@SerializedName("geometry") var geometry: GeoJsonObject = GeoJsonObject()
-	@SerializedName("id") var id: String = ""
+	@field:Json(name = "geometry")
+	@SerializedName("geometry")
+	var geometry: GeoJsonObject = GeoJsonObject()
+
+	@field:Json(name = "id")
+	@SerializedName("id")
+	var id: String = ""
 
 	init { type = "Feature" }
 }

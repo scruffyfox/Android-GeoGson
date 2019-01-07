@@ -1,11 +1,14 @@
 package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import com.squareup.moshi.Json
+import java.util.ArrayList
 
 open class FeatureCollection : GeoJsonObject(), Iterable<Feature>
 {
-	@SerializedName("features") var features: ArrayList<Feature> = arrayListOf<Feature>()
+	@field:Json(name = "features")
+	@SerializedName("features")
+	var features: ArrayList<Feature> = arrayListOf<Feature>()
 
 	init { type = "FeatureCollection" }
 

@@ -1,10 +1,13 @@
 package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 open class GeometryCollection : GeoJsonObject(), Iterable<GeoJsonObject>
 {
-	@SerializedName("geometries") var geometries: ArrayList<GeoJsonObject> = arrayListOf<GeoJsonObject>()
+	@field:Json(name = "geometries")
+	@SerializedName("geometries")
+	var geometries: ArrayList<GeoJsonObject> = arrayListOf<GeoJsonObject>()
 
 	init { type = "GeometryCollection" }
 

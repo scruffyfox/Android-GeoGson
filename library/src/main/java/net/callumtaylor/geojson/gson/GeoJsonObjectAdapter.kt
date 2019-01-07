@@ -1,7 +1,23 @@
 package net.callumtaylor.geojson.gson
 
-import com.google.gson.*
-import net.callumtaylor.geojson.*
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
+import net.callumtaylor.geojson.Circle
+import net.callumtaylor.geojson.Feature
+import net.callumtaylor.geojson.FeatureCollection
+import net.callumtaylor.geojson.GeoGson
+import net.callumtaylor.geojson.GeoJsonObject
+import net.callumtaylor.geojson.GeometryCollection
+import net.callumtaylor.geojson.LineString
+import net.callumtaylor.geojson.MultiLineString
+import net.callumtaylor.geojson.MultiPoint
+import net.callumtaylor.geojson.MultiPolygon
+import net.callumtaylor.geojson.Point
+import net.callumtaylor.geojson.Polygon
 import java.lang.reflect.Type
 
 open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserializer<GeoJsonObject>
@@ -63,7 +79,6 @@ open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserialize
 		GeoGson.registerAdapters(builder)
 
 		val geoObject = builder.create().fromJson(json, cls)
-		geoObject.finishPopulate()
 
 		return geoObject
 	}

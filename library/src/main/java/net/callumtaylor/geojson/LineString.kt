@@ -1,9 +1,13 @@
 package net.callumtaylor.geojson
 
-open class LineString : MultiPoint
+import com.squareup.moshi.JsonClass
+
+open class LineString() : MultiPoint()
 {
 	init { type = "LineString" }
 
-	constructor()
-	constructor(vararg points: LngLatAlt): super(*points)
+	constructor(vararg points: LngLatAlt): this()
+	{
+		this.coordinates = arrayListOf(*points)
+	}
 }

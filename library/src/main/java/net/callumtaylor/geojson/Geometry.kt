@@ -1,15 +1,18 @@
 package net.callumtaylor.geojson
 
+import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.ArrayList
 
-open class Geometry<T> : GeoJsonObject
+open class Geometry<T>() : GeoJsonObject()
 {
-	public val coordinates: ArrayList<T> = arrayListOf<T>()
+	@field:Json(name = "coordinates")
+	@SerializedName("coordinates")
+	public var coordinates: ArrayList<T> = arrayListOf<T>()
 
 	init { type = "Geometry" }
 
-	constructor()
-	constructor(vararg elements: T)
+	constructor(vararg elements: T) : this()
 	{
 		elements.forEach { coordinates.add(it) }
 	}
