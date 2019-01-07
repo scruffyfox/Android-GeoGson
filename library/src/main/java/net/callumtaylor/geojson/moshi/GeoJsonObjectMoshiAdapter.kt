@@ -23,7 +23,7 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 //			"MultiPolygon" to MultiPolygon::class.java
 		)
 
-		public val OPTIONS: JsonReader.Options = JsonReader.Options.of("type", "coordinates", "bbox", "properties", "foreign")
+		public val OPTIONS = arrayOf("type", "coordinates", "bbox", "properties")
 	}
 
 	override fun fromJson(reader: JsonReader): GeoJsonObject?
@@ -33,7 +33,7 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 		reader.beginObject()
 		read@ while (reader.hasNext())
 		{
-			when (reader.selectName(OPTIONS))
+			when (reader.selectName(JsonReader.Options.of(*OPTIONS)))
 			{
 				0 -> {
 					type = reader.nextString()
@@ -68,9 +68,17 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 			}
 			-1 -> {
 				outObj.foreign = outObj.foreign ?: HashMap<String, Any?>()
-				val name = reader.nextName()
-				val value = reader.readJsonValue()
-				outObj.foreign!![name] = value
+
+				if (reader.peek() == JsonReader.Token.NAME)
+				{
+					val name = reader.nextName()
+					val value = reader.readJsonValue()
+					outObj.foreign!![name] = value
+				}
+				else
+				{
+					reader.skipValue()
+				}
 			}
 		}
 	}

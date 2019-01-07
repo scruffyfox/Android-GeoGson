@@ -2,6 +2,7 @@ package net.callumtaylor.geojson.test
 
 import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
+import net.callumtaylor.geojson.Circle
 import net.callumtaylor.geojson.GeoGson
 import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.GeoMoshi
@@ -41,6 +42,17 @@ public class MoshiTests
 		Assert.assertTrue(value is Point)
 		val point2 = value as Point
 		assertLngLatAlt(100.0, 5.0, Double.NaN, point2.coordinates)
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeACircle()
+	{
+		val value = moshi.adapter(Circle::class.java).fromJson("{\"type\":\"Circle\",\"coordinates\":[100.0,5.0],\"radius\":1000.0}")
+		Assert.assertNotNull(value)
+		Assert.assertTrue(value is Circle)
+		assertLngLatAlt(100.0, 5.0, Double.NaN, value!!.coordinates)
+		Assert.assertEquals(1000.0, value.radius, 0.00001)
 	}
 
 	@Test

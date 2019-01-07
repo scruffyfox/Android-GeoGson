@@ -2,7 +2,6 @@ package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 open class Circle() : Point()
 {

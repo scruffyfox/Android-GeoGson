@@ -6,33 +6,35 @@ import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
+import net.callumtaylor.geojson.Circle
 import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.LngLatAlt
-import net.callumtaylor.geojson.Point
 import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter.Companion.OPTIONS
 
-class PointJsonAdapter : JsonAdapter<Point>()
+class CircleJsonAdapter : JsonAdapter<Circle>()
 {
 	private val defaultAdapter = GeoJsonObjectMoshiAdapter()
 	private val positionJsonAdapter = LngLatAltMoshiAdapter()
 
 	@FromJson
-	override fun fromJson(reader: JsonReader): Point
+	override fun fromJson(reader: JsonReader): Circle
 	{
-		val point = Point()
+		val circle = Circle()
 		var type = ""
 		var position: LngLatAlt? = null
+		var radius: Double? = null
 		var defaults = GeoJsonObject()
 
 		reader.beginObject()
 		while (reader.hasNext())
 		{
-			when (val index = reader.selectName(JsonReader.Options.of(*OPTIONS)))
+			when (val index = reader.selectName(JsonReader.Options.of(*OPTIONS, "radius")))
 			{
 				0 -> type = reader.nextString()
 				1 -> position = positionJsonAdapter.fromJson(reader)
+				OPTIONS.size -> radius = reader.nextDouble()
 				else -> {
-					defaultAdapter.readDefault(point, index, reader)
+					defaultAdapter.readDefault(circle, index, reader)
 				}
 			}
 		}
@@ -43,21 +45,27 @@ class PointJsonAdapter : JsonAdapter<Point>()
 			throw JsonDataException("Required positions are missing at ${reader.path}")
 		}
 
-		if (type != "Point")
+		if (radius == null)
 		{
-			throw JsonDataException("Required type is not a Point at ${reader.path}")
+			throw JsonDataException("Required radius is missing at ${reader.path}")
 		}
 
-		point.coordinates = position
-		return point
+		if (type != "Circle")
+		{
+			throw JsonDataException("Required type is not a Circle at ${reader.path}")
+		}
+
+		circle.coordinates = position
+		circle.radius = radius
+		return circle
 	}
 
 	@ToJson
-	override fun toJson(writer: JsonWriter, value: Point?)
+	override fun toJson(writer: JsonWriter, value: Circle?)
 	{
 		if (value == null)
 		{
-			throw NullPointerException("Point was null! Wrap in .nullSafe() to write nullable values.")
+			throw NullPointerException("Circle was null! Wrap in .nullSafe() to write nullable values.")
 		}
 
 		writer.beginObject()
@@ -65,6 +73,8 @@ class PointJsonAdapter : JsonAdapter<Point>()
 		positionJsonAdapter.toJson(writer, value.coordinates)
 		writer.name("type")
 		writer.value(value.type)
+		writer.name("radius")
+		writer.value(value.radius)
 		writer.endObject()
 	}
 }
