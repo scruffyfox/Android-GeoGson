@@ -1,6 +1,6 @@
 package net.callumtaylor.geojson
 
-open class MultiPolygon : Geometry<List<List<LngLatAlt>>>()
+open class MultiPolygon() : Geometry<ArrayList<ArrayList<LngLatAlt>>>()
 {
 	init { type = "MultiPolygon" }
 

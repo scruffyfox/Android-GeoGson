@@ -19,8 +19,8 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 			"MultiLineString" to MultiLineStringJsonAdapter(),
 			"Point" to PointJsonAdapter(),
 			"MultiPoint" to MultiPointJsonAdapter(),
-			"Polygon" to PolygonJsonAdapter()
-//			"MultiPolygon" to MultiPolygon::class.java
+			"Polygon" to PolygonJsonAdapter(),
+			"MultiPolygon" to MultiPolygonJsonAdapter()
 		)
 
 		public val OPTIONS = arrayOf("type", "coordinates", "bbox", "properties")
