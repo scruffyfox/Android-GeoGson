@@ -15,7 +15,7 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 //			"Feature" to Feature::class.java,
 //			"FeatureCollection" to FeatureCollection::class.java,
 //			"GeometryCollection" to GeometryCollection::class.java,
-//			"LineString" to LineString::class.java,
+			"LineString" to LineStringJsonAdapter(),
 //			"MultiLineString" to MultiLineString::class.java,
 			"Point" to PointJsonAdapter(),
 			"MultiPoint" to MultiPointJsonAdapter()

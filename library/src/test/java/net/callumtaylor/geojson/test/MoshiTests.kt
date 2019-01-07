@@ -1,11 +1,10 @@
 package net.callumtaylor.geojson.test
 
-import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 import net.callumtaylor.geojson.Circle
-import net.callumtaylor.geojson.GeoGson
 import net.callumtaylor.geojson.GeoJsonObject
 import net.callumtaylor.geojson.GeoMoshi
+import net.callumtaylor.geojson.LineString
 import net.callumtaylor.geojson.LngLatAlt
 import net.callumtaylor.geojson.MultiPoint
 import net.callumtaylor.geojson.Point
@@ -14,7 +13,6 @@ import org.junit.Test
 
 public class MoshiTests
 {
-	private val gson = GeoGson.registerAdapters(GsonBuilder()).create()
 	private val moshi = GeoMoshi.registerAdapters(Moshi.Builder()).build()
 
 //	@Test
@@ -38,6 +36,9 @@ public class MoshiTests
 
 		val multiPoint = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}")
 		Assert.assertTrue(multiPoint is MultiPoint)
+
+		val lineString = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}")
+		Assert.assertTrue(lineString is LineString)
 	}
 
 	@Test
@@ -120,20 +121,20 @@ public class MoshiTests
 //		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}", gson.toJson(lineString))
 //	}
 //
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldDeserializeLineString()
-//	{
-//		val lineString = moshi.adapter(GeoJsonObject::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}")
-//		Assert.assertNotNull(lineString)
-//		Assert.assertTrue(lineString is LineString)
-//
-//		with (lineString as LineString) {
-//			val coordinates = lineString.coordinates
-//			assertLngLatAlt(100.0, 0.0, Double.NaN, coordinates[0])
-//			assertLngLatAlt(101.0, 1.0, Double.NaN, coordinates[1])
-//		}
-//	}
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeLineString()
+	{
+		val lineString = moshi.adapter(LineString::class.java).fromJson("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}")
+		Assert.assertNotNull(lineString)
+		Assert.assertTrue(lineString is LineString)
+
+		with (lineString as LineString) {
+			val coordinates = lineString.coordinates
+			assertLngLatAlt(100.0, 0.0, null, coordinates[0])
+			assertLngLatAlt(101.0, 1.0, null, coordinates[1])
+		}
+	}
 //
 //	@Test
 //	@Throws(Exception::class)
