@@ -123,14 +123,6 @@ public class MoshiTests
 //		Assert.assertEquals("{\"coordinates\":[100.0,0.0,256.0],\"type\":\"Point\"}", gson.toJson(point))
 //	}
 //
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeLineString()
-//	{
-//		val lineString = LineString(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
-//		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}", gson.toJson(lineString))
-//	}
-//
 	@Test
 	@Throws(Exception::class)
 	fun itShouldDeserializeLineString()
@@ -144,6 +136,14 @@ public class MoshiTests
 			assertLngLatAlt(100.0, 0.0, null, coordinates[0])
 			assertLngLatAlt(101.0, 1.0, null, coordinates[1])
 		}
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeLineString()
+	{
+		val lineString = LineString(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
+		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"LineString\"}", moshi.adapter(GeoJsonObject::class.java).toJson(lineString))
 	}
 
 	@Test
