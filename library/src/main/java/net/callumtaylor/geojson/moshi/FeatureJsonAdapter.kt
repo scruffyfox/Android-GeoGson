@@ -57,8 +57,9 @@ class FeatureJsonAdapter : JsonAdapter<Feature>()
 		}
 
 		writer.beginObject()
+		writer.name("geometry")
+		defaultAdapter.toJson(writer, value.geometry)
 		defaultAdapter.writeDefault(value, writer)
-
 		writer.endObject()
 	}
 }
