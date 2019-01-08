@@ -20,7 +20,7 @@ class FeatureJsonAdapter : JsonAdapter<Feature>()
 			when (val index = reader.selectName(JsonReader.Options.of(*OPTIONS, "geometry", "id")))
 			{
 				0 -> type = reader.nextString()
-				1, 2 -> {
+				1 -> {
 					reader.skipName()
 					reader.skipValue()
 				}

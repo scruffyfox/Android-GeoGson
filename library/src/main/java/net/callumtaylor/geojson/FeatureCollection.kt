@@ -2,7 +2,6 @@ package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
-import java.util.ArrayList
 
 open class FeatureCollection : GeoJsonObject(), Iterable<Feature>
 {

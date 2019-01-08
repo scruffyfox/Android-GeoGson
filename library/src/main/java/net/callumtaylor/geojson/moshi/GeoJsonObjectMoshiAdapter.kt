@@ -13,7 +13,7 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 		private val types = mapOf<String, JsonAdapter<*>>(
 			"Circle" to CircleJsonAdapter(),
 			"Feature" to FeatureJsonAdapter(),
-//			"FeatureCollection" to FeatureCollection::class.java,
+			"FeatureCollection" to FeatureCollectionJsonAdapter(),
 //			"GeometryCollection" to GeometryCollection::class.java,
 			"LineString" to LineStringJsonAdapter(),
 			"MultiLineString" to MultiLineStringJsonAdapter(),

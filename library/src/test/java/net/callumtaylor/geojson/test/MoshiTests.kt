@@ -368,6 +368,40 @@ public class MoshiTests
 		Assert.assertEquals(10.1, (feature.geometry as Point).coordinates.latitude, 0.00001)
 	}
 
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeFeatureCollection()
+	{
+		val feature = moshi.adapter(FeatureCollection::class.java).fromJson("""
+			 {
+				"type": "FeatureCollection",
+				"bbox": [100, 0, 105, 1],
+				"features": [
+					{
+						"type": "Feature",
+						"geometry": {
+							"type": "Point",
+							"coordinates": [125.6, 10.1]
+						},
+						"properties": {
+							"name": "Dinagat Islands"
+						}
+					}
+				]
+			}
+		""")
+
+		Assert.assertNotNull(feature)
+		Assert.assertTrue(feature is FeatureCollection)
+		Assert.assertNotNull(feature!!.features)
+		Assert.assertEquals(1, feature.features.size)
+		Assert.assertEquals("Dinagat Islands", feature.features[0].properties!!["name"])
+		Assert.assertNotNull(feature.features[0].geometry)
+		Assert.assertTrue(feature.features[0].geometry is Point)
+		Assert.assertEquals(125.6, (feature.features[0].geometry as Point).coordinates.longitude, 0.00001)
+		Assert.assertEquals(10.1, (feature.features[0].geometry as Point).coordinates.latitude, 0.00001)
+	}
+
 	private fun assertListEquals(expectedList: List<LngLatAlt>, actualList: List<LngLatAlt>)
 	{
 		for (x in actualList.indices)
