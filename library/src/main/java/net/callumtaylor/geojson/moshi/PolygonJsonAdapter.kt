@@ -70,15 +70,16 @@ class PolygonJsonAdapter : JsonAdapter<Polygon>()
 
 		writer.beginObject()
 		writer.name("coordinates")
-		value.coordinates.forEach { coordinateList ->
+		writer.beginArray()
+		value.coordinates.forEach { polyRing ->
 			writer.beginArray()
-			coordinateList.forEach { coordinate ->
+			polyRing.forEach { coordinate ->
 				positionJsonAdapter.toJson(writer, coordinate)
 			}
 			writer.endArray()
 		}
-		writer.name("type")
-		writer.value(value.type)
+		writer.endArray()
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }

@@ -177,7 +177,6 @@ public class MoshiTests
 		}
 	}
 
-//
 //	@Test
 //	@Throws(Exception::class)
 //	fun itShouldSerializeMultiLineString()
@@ -187,15 +186,7 @@ public class MoshiTests
 //		multiLineString.coordinates.add(arrayListOf(LngLatAlt(102.0, 2.0), LngLatAlt(103.0, 3.0)))
 //		Assert.assertEquals("{\"coordinates\":" + "[[[100.0,0.0],[101.0,1.0]],[[102.0,2.0],[103.0,3.0]]],\"type\":\"MultiLineString\"}", gson.toJson(multiLineString))
 //	}
-//
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeMultiPoint()
-//	{
-//		val multiPoint = MultiPoint(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
-//		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", gson.toJson(multiPoint))
-//	}
-//
+
 	@Test
 	@Throws(Exception::class)
 	fun itShouldDeserializeMultiPoint()
@@ -207,7 +198,16 @@ public class MoshiTests
 		assertLngLatAlt(100.0, 0.0, null, coordinates[0])
 		assertLngLatAlt(101.0, 1.0, null, coordinates[1])
 	}
+
+//	@Test
+//	@Throws(Exception::class)
+//	fun itShouldSerializeMultiPoint()
+//	{
+//		val multiPoint = MultiPoint(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
+//		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", gson.toJson(multiPoint))
+//	}
 //
+
 //	@Test
 //	@Throws(Exception::class)
 //	fun itShouldSerializeMultiPolygon()
@@ -280,19 +280,7 @@ public class MoshiTests
 
 		Assert.assertEquals(2, multiPolygon!!.coordinates.size)
 	}
-//
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializePolygon()
-//	{
-//		val polygon = Polygon(arrayListOf(
-//			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
-//			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-//			LngLatAlt(100.0, 0.0)
-//		))
-//		Assert.assertEquals("{\"coordinates\":" + "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]],\"type\":\"Polygon\"}", gson.toJson(polygon))
-//	}
-//
+
 //	@Test
 //	@Throws(Exception::class)
 //	fun itShouldSerializeWithHole()
@@ -326,23 +314,27 @@ public class MoshiTests
 	@Throws(Exception::class)
 	fun itShouldDeserializePolygon()
 	{
-		val polygon = moshi.adapter(Polygon::class.java).fromJson("{\"coordinates\":"
-			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
-			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]],\"type\":\"Polygon\"}")
+		val polygon = moshi.adapter(Polygon::class.java).fromJson("""
+			{"type":"Polygon","coordinates":[[[100,0],[101,0],[101,1],[100,1],[100,0]]]}
+		""")
 		Assert.assertNotNull(polygon)
 		Assert.assertTrue(polygon is Polygon)
 		assertListEquals(arrayListOf(
 			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
 			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-			LngLatAlt(100.0, 0.0)), polygon!!.getExteriorRing())
-		assertListEquals(arrayListOf(
-			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-			LngLatAlt(100.2, 0.2)), polygon.getInteriorRing(0))
-		assertListEquals(arrayListOf(
-			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-			LngLatAlt(100.2, 0.2)), polygon.getInteriorRings()[0])
+			LngLatAlt(100.0, 0.0)), polygon!!.coordinates[0])
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializePolygon()
+	{
+		val polygon = Polygon(arrayListOf(
+			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
+			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
+			LngLatAlt(100.0, 0.0)
+		))
+		Assert.assertEquals("{\"coordinates\":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]],\"type\":\"Polygon\"}", moshi.adapter(GeoJsonObject::class.java).toJson(polygon))
 	}
 
 	@Test
