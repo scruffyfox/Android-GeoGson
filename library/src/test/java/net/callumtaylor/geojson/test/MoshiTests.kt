@@ -106,23 +106,6 @@ public class MoshiTests
 		Assert.assertEquals(0.0, value.bbox!![5], 0.00001)
 	}
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldDeserializeAPointWithAltitude()
-//	{
-//		val value = gson.fromJson("{\"coordinates\":[100.0,5.0,123],\"type\":\"Point\"}", GeoJsonObject::class.java)
-//		val point = value as Point
-//		assertLngLatAlt(100.0, 5.0, 123.0, point.coordinates)
-//	}
-//
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeAPointWithAltitude()
-//	{
-//		val point = Point(100.0, 0.0, 256.0)
-//		Assert.assertEquals("{\"coordinates\":[100.0,0.0,256.0],\"type\":\"Point\"}", gson.toJson(point))
-//	}
-//
 	@Test
 	@Throws(Exception::class)
 	fun itShouldDeserializeLineString()
@@ -280,35 +263,6 @@ public class MoshiTests
 		moshi.adapter(GeoJsonObject::class.java).toJson(multiPolygon))
 	}
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeWithHole()
-//	{
-//		val polygon = Polygon(arrayListOf(
-//			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
-//			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-//			LngLatAlt(100.0, 0.0)
-//		))
-//		polygon.addInteriorRing(
-//			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-//			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-//			LngLatAlt(100.2, 0.2))
-//		Assert.assertEquals("{\"coordinates\":"
-//			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
-//			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]],\"type\":\"Polygon\"}", gson.toJson(polygon))
-//	}
-//
-//	@Test(expected = RuntimeException::class)
-//	@Throws(Exception::class)
-//	fun itShouldFailOnAddInteriorRingWithoutExteriorRing()
-//	{
-//		val polygon = Polygon()
-//		polygon.addInteriorRing(arrayListOf(
-//			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
-//			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-//			LngLatAlt(100.0, 0.0)))
-//	}
-//
 	@Test
 	@Throws(Exception::class)
 	fun itShouldDeserializePolygon()
