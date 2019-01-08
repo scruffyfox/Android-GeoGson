@@ -199,14 +199,13 @@ public class MoshiTests
 		assertLngLatAlt(101.0, 1.0, null, coordinates[1])
 	}
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeMultiPoint()
-//	{
-//		val multiPoint = MultiPoint(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
-//		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", gson.toJson(multiPoint))
-//	}
-//
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeMultiPoint()
+	{
+		val multiPoint = MultiPoint(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0))
+		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", moshi.adapter(GeoJsonObject::class.java).toJson(multiPoint))
+	}
 
 //	@Test
 //	@Throws(Exception::class)
