@@ -67,6 +67,14 @@ public class MoshiTests
 
 	@Test
 	@Throws(Exception::class)
+	fun itShouldSerializeACircle()
+	{
+		val circle = Circle(100.0, 0.0, null, 1000.0)
+		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"radius\":1000.0,\"type\":\"Circle\"}", moshi.adapter(GeoJsonObject::class.java).toJson(circle))
+	}
+
+	@Test
+	@Throws(Exception::class)
 	fun itShouldDeserializeAPointWithProperties()
 	{
 		val value = moshi.adapter(Point::class.java).fromJson("""

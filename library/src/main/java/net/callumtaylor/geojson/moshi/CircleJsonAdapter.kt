@@ -64,10 +64,9 @@ class CircleJsonAdapter : JsonAdapter<Circle>()
 		writer.beginObject()
 		writer.name("coordinates")
 		positionJsonAdapter.toJson(writer, value.coordinates)
-		writer.name("type")
-		writer.value(value.type)
 		writer.name("radius")
 		writer.value(value.radius)
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }
