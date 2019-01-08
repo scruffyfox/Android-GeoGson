@@ -1,11 +1,6 @@
 package net.callumtaylor.geojson.moshi
 
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonDataException
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.*
 import net.callumtaylor.geojson.LngLatAlt
 import net.callumtaylor.geojson.MultiLineString
 import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter.Companion.OPTIONS
@@ -84,8 +79,7 @@ class MultiLineStringJsonAdapter : JsonAdapter<MultiLineString>()
 			writer.endArray()
 		}
 		writer.endArray()
-		writer.name("type")
-		writer.value(value.type)
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }

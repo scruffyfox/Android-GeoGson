@@ -177,15 +177,15 @@ public class MoshiTests
 		}
 	}
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeMultiLineString()
-//	{
-//		val multiLineString = MultiLineString()
-//		multiLineString.coordinates.add(arrayListOf(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0)))
-//		multiLineString.coordinates.add(arrayListOf(LngLatAlt(102.0, 2.0), LngLatAlt(103.0, 3.0)))
-//		Assert.assertEquals("{\"coordinates\":" + "[[[100.0,0.0],[101.0,1.0]],[[102.0,2.0],[103.0,3.0]]],\"type\":\"MultiLineString\"}", gson.toJson(multiLineString))
-//	}
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeMultiLineString()
+	{
+		val multiLineString = MultiLineString()
+		multiLineString.coordinates.add(arrayListOf(LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 1.0)))
+		multiLineString.coordinates.add(arrayListOf(LngLatAlt(102.0, 2.0), LngLatAlt(103.0, 3.0)))
+		Assert.assertEquals("{\"coordinates\":[[[100.0,0.0],[101.0,1.0]],[[102.0,2.0],[103.0,3.0]]],\"type\":\"MultiLineString\"}", moshi.adapter(GeoJsonObject::class.java).toJson(multiLineString))
+	}
 
 	@Test
 	@Throws(Exception::class)
