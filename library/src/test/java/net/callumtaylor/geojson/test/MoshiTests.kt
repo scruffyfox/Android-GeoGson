@@ -9,15 +9,6 @@ public class MoshiTests
 {
 	private val moshi = GeoMoshi.registerAdapters(Moshi.Builder()).build()
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeAPoint()
-//	{
-//		val point = Point(100.0, 0.0)
-//		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", gson.toJson(point))
-////		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", moshi.adapter(GeoJsonObject::class.java).toJson(point))
-//	}
-
 	@Test
 	@Throws(Exception::class)
 	fun intelligentDeserialisation()
@@ -53,6 +44,14 @@ public class MoshiTests
 		Assert.assertTrue(value is Point)
 		val point2 = value as Point
 		assertLngLatAlt(100.0, 5.0, Double.NaN, point2.coordinates)
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeAPoint()
+	{
+		val point = Point(100.0, 0.0)
+		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", moshi.adapter(GeoJsonObject::class.java).toJson(point))
 	}
 
 	@Test

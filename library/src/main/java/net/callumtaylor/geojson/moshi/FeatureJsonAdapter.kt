@@ -57,8 +57,8 @@ class FeatureJsonAdapter : JsonAdapter<Feature>()
 		}
 
 		writer.beginObject()
-		writer.name("type")
-		writer.value(value.type)
+		defaultAdapter.writeDefault(value, writer)
+
 		writer.endObject()
 	}
 }

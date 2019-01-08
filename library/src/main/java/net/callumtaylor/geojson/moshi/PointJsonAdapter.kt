@@ -56,8 +56,7 @@ class PointJsonAdapter : JsonAdapter<Point>()
 		writer.beginObject()
 		writer.name("coordinates")
 		positionJsonAdapter.toJson(writer, value.coordinates)
-		writer.name("type")
-		writer.value(value.type)
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }
