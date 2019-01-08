@@ -64,8 +64,13 @@ class GeometryCollectionJsonAdapter : JsonAdapter<GeometryCollection>()
 		}
 
 		writer.beginObject()
-		writer.name("type")
-		writer.value(value.type)
+		writer.name("geometries")
+		writer.beginArray()
+		value.geometries.forEach { geometry ->
+			defaultAdapter.toJson(writer, geometry)
+		}
+		writer.endArray()
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }

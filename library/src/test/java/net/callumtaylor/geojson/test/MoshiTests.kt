@@ -447,6 +447,18 @@ public class MoshiTests
 		Assert.assertEquals(45.0, (geometry.geometries[1] as Polygon).coordinates[0][0].latitude, 0.00001)
 	}
 
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeGeometryCollection()
+	{
+		val collection = GeometryCollection()
+		collection.geometries.add(Point(0.0, 0.0))
+		collection.geometries.add(Point(125.0, -10.0))
+
+		val str = "{\"geometries\":[{\"coordinates\":[0.0,0.0],\"type\":\"Point\"},{\"coordinates\":[125.0,-10.0],\"type\":\"Point\"}],\"type\":\"GeometryCollection\"}"
+		Assert.assertEquals(str, moshi.adapter(GeoJsonObject::class.java).toJson(collection))
+	}
+
 	private fun assertListEquals(expectedList: List<LngLatAlt>, actualList: List<LngLatAlt>)
 	{
 		for (x in actualList.indices)
