@@ -63,8 +63,13 @@ class FeatureCollectionJsonAdapter : JsonAdapter<FeatureCollection>()
 		}
 
 		writer.beginObject()
-		writer.name("type")
-		writer.value(value.type)
+		writer.name("features")
+		writer.beginArray()
+		value.features.forEach { feature ->
+			defaultAdapter.toJson(writer, feature)
+		}
+		writer.endArray()
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }

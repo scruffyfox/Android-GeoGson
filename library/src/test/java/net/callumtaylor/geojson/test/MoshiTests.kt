@@ -411,6 +411,17 @@ public class MoshiTests
 
 	@Test
 	@Throws(Exception::class)
+	fun itShouldSerializeFeatureCollection()
+	{
+		val feature = FeatureCollection()
+		feature.features.add(Feature().also {
+			it.geometry = Point(125.6, 10.1)
+		})
+		Assert.assertEquals("{\"features\":[{\"geometry\":{\"coordinates\":[125.6,10.1],\"type\":\"Point\"},\"type\":\"Feature\"}],\"type\":\"FeatureCollection\"}", moshi.adapter(FeatureCollection::class.java).toJson(feature))
+	}
+
+	@Test
+	@Throws(Exception::class)
 	fun itShouldDeserializeGeometryCollection()
 	{
 		val geometry = moshi.adapter(GeometryCollection::class.java).fromJson("""
