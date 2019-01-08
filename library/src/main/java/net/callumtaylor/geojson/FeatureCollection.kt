@@ -18,4 +18,9 @@ open class FeatureCollection : GeoJsonObject(), Iterable<Feature>
 	}
 
 	override fun iterator(): Iterator<Feature> = features.iterator()
+
+	operator fun plusAssign(rhs: Feature): Unit
+	{
+		features.add(rhs)
+	}
 }

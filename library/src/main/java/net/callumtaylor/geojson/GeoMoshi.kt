@@ -23,6 +23,7 @@ object GeoMoshi
 		builder.add(MultiPolygon::class.java, MultiPolygonJsonAdapter())
 		builder.add(Feature::class.java, FeatureJsonAdapter())
 		builder.add(FeatureCollection::class.java, FeatureCollectionJsonAdapter())
+		builder.add(GeometryCollection::class.java, GeometryCollectionJsonAdapter())
 		builder.add(GeoJsonObject::class.java, GeoJsonObjectMoshiAdapter())
 		builder.add(LngLatAlt::class.java, LngLatAltMoshiAdapter())
 		return builder

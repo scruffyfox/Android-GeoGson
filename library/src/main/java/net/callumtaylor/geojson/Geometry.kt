@@ -2,9 +2,9 @@ package net.callumtaylor.geojson
 
 import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
-import java.util.ArrayList
+import java.util.*
 
-open class Geometry<T>() : GeoJsonObject()
+abstract class Geometry<T>() : GeoJsonObject()
 {
 	@field:Json(name = "coordinates")
 	@SerializedName("coordinates")

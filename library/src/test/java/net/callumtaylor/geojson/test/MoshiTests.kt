@@ -402,6 +402,44 @@ public class MoshiTests
 		Assert.assertEquals(10.1, (feature.features[0].geometry as Point).coordinates.latitude, 0.00001)
 	}
 
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeGeometryCollection()
+	{
+		val geometry = moshi.adapter(GeometryCollection::class.java).fromJson("""
+			{
+				"type": "GeometryCollection",
+				"properties": {
+					"value": "foo"
+				},
+				"geometries": [
+					{
+						"type": "Point",
+						"coordinates": [0,0]
+					},
+					{
+						"type": "Polygon",
+						"coordinates": [[[45,45],[45,-45],[-45,-45],[-45,45],[45,45]]]
+					}
+				]
+			}
+		""")
+
+		Assert.assertNotNull(geometry)
+		Assert.assertTrue(geometry is GeometryCollection)
+		Assert.assertNotNull(geometry!!.geometries)
+		Assert.assertEquals(2, geometry.geometries.size)
+		Assert.assertEquals("foo", geometry.properties!!["value"])
+		Assert.assertTrue(geometry.geometries[0] is Point)
+		Assert.assertTrue(geometry.geometries[1] is Polygon)
+		Assert.assertEquals(0.0, (geometry.geometries[0] as Point).coordinates.longitude, 0.00001)
+		Assert.assertEquals(0.0, (geometry.geometries[0] as Point).coordinates.latitude, 0.00001)
+		Assert.assertEquals(1, (geometry.geometries[1] as Polygon).coordinates.size)
+		Assert.assertEquals(5, (geometry.geometries[1] as Polygon).coordinates[0].size)
+		Assert.assertEquals(45.0, (geometry.geometries[1] as Polygon).coordinates[0][0].longitude, 0.00001)
+		Assert.assertEquals(45.0, (geometry.geometries[1] as Polygon).coordinates[0][0].latitude, 0.00001)
+	}
+
 	private fun assertListEquals(expectedList: List<LngLatAlt>, actualList: List<LngLatAlt>)
 	{
 		for (x in actualList.indices)
