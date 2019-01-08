@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import net.callumtaylor.geojson.GeoJsonObject
-import java.util.HashMap
+import java.util.*
 
 open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 {
@@ -12,7 +12,7 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 	{
 		private val types = mapOf<String, JsonAdapter<*>>(
 			"Circle" to CircleJsonAdapter(),
-//			"Feature" to Feature::class.java,
+			"Feature" to FeatureJsonAdapter(),
 //			"FeatureCollection" to FeatureCollection::class.java,
 //			"GeometryCollection" to GeometryCollection::class.java,
 			"LineString" to LineStringJsonAdapter(),

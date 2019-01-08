@@ -1,15 +1,7 @@
 package net.callumtaylor.geojson
 
 import com.squareup.moshi.Moshi
-import net.callumtaylor.geojson.moshi.CircleJsonAdapter
-import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter
-import net.callumtaylor.geojson.moshi.LineStringJsonAdapter
-import net.callumtaylor.geojson.moshi.LngLatAltMoshiAdapter
-import net.callumtaylor.geojson.moshi.MultiLineStringJsonAdapter
-import net.callumtaylor.geojson.moshi.MultiPointJsonAdapter
-import net.callumtaylor.geojson.moshi.MultiPolygonJsonAdapter
-import net.callumtaylor.geojson.moshi.PointJsonAdapter
-import net.callumtaylor.geojson.moshi.PolygonJsonAdapter
+import net.callumtaylor.geojson.moshi.*
 
 /**
  * Entrypoint for generating Moshi parser with required overrides
@@ -29,6 +21,7 @@ object GeoMoshi
 		builder.add(MultiLineString::class.java, MultiLineStringJsonAdapter())
 		builder.add(Polygon::class.java, PolygonJsonAdapter())
 		builder.add(MultiPolygon::class.java, MultiPolygonJsonAdapter())
+		builder.add(Feature::class.java, FeatureJsonAdapter())
 		builder.add(GeoJsonObject::class.java, GeoJsonObjectMoshiAdapter())
 		builder.add(LngLatAlt::class.java, LngLatAltMoshiAdapter())
 		return builder

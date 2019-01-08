@@ -1,16 +1,7 @@
 package net.callumtaylor.geojson.test
 
 import com.squareup.moshi.Moshi
-import net.callumtaylor.geojson.Circle
-import net.callumtaylor.geojson.GeoJsonObject
-import net.callumtaylor.geojson.GeoMoshi
-import net.callumtaylor.geojson.LineString
-import net.callumtaylor.geojson.LngLatAlt
-import net.callumtaylor.geojson.MultiLineString
-import net.callumtaylor.geojson.MultiPoint
-import net.callumtaylor.geojson.MultiPolygon
-import net.callumtaylor.geojson.Point
-import net.callumtaylor.geojson.Polygon
+import net.callumtaylor.geojson.*
 import org.junit.Assert
 import org.junit.Test
 
@@ -345,6 +336,36 @@ public class MoshiTests
 			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
 			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
 			LngLatAlt(100.2, 0.2)), polygon.getInteriorRings()[0])
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldDeserializeFeature()
+	{
+		val feature = moshi.adapter(Feature::class.java).fromJson("""
+			{
+				"type": "Feature",
+				"geometry": {
+					"type": "Point",
+					"coordinates": [
+						125.6,
+						10.1
+					]
+				},
+				"properties": {
+					"name": "Dinagat Islands"
+				}
+			}
+		""")
+
+		Assert.assertNotNull(feature)
+		Assert.assertTrue(feature is Feature)
+		Assert.assertNotNull(feature!!.properties)
+		Assert.assertEquals("Dinagat Islands", feature.properties!!["name"])
+		Assert.assertNotNull(feature.geometry)
+		Assert.assertTrue(feature.geometry is Point)
+		Assert.assertEquals(125.6, (feature.geometry as Point).coordinates.longitude, 0.00001)
+		Assert.assertEquals(10.1, (feature.geometry as Point).coordinates.latitude, 0.00001)
 	}
 
 	private fun assertListEquals(expectedList: List<LngLatAlt>, actualList: List<LngLatAlt>)
