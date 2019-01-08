@@ -80,6 +80,7 @@ class MultiPolygonJsonAdapter : JsonAdapter<MultiPolygon>()
 
 		writer.beginObject()
 		writer.name("coordinates")
+		writer.beginArray()
 		value.coordinates.forEach { polygonList ->
 			writer.beginArray()
 			polygonList.forEach { coordinateList ->
@@ -91,8 +92,8 @@ class MultiPolygonJsonAdapter : JsonAdapter<MultiPolygon>()
 			}
 			writer.endArray()
 		}
-		writer.name("type")
-		writer.value(value.type)
+		writer.endArray()
+		defaultAdapter.writeDefault(value, writer)
 		writer.endObject()
 	}
 }

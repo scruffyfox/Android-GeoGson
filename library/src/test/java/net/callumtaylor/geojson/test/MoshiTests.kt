@@ -207,37 +207,6 @@ public class MoshiTests
 		Assert.assertEquals("{\"coordinates\":[[100.0,0.0],[101.0,1.0]],\"type\":\"MultiPoint\"}", moshi.adapter(GeoJsonObject::class.java).toJson(multiPoint))
 	}
 
-//	@Test
-//	@Throws(Exception::class)
-//	fun itShouldSerializeMultiPolygon()
-//	{
-//		val multiPolygon = MultiPolygon()
-//		multiPolygon.coordinates.add(Polygon(arrayListOf(
-//			LngLatAlt(102.0, 2.0),
-//			LngLatAlt(103.0, 2.0),
-//			LngLatAlt(103.0, 3.0),
-//			LngLatAlt(102.0, 3.0),
-//			LngLatAlt(102.0, 2.0)
-//		)).coordinates)
-//
-//		val polygon = Polygon(arrayListOf(
-//			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
-//			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
-//			LngLatAlt(100.0, 0.0)
-//		))
-//		polygon.addInteriorRing(arrayListOf(
-//			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
-//			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
-//			LngLatAlt(100.2, 0.2)
-//		))
-//		multiPolygon.coordinates.add(polygon.coordinates)
-//		Assert.assertEquals(
-//			"{\"coordinates\":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]],"
-//			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
-//			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]],\"type\":\"MultiPolygon\"}",
-//		gson.toJson(multiPolygon))
-//	}
-//
 	@Test
 	@Throws(Exception::class)
 	fun itShouldDeserializeMultiPolygon()
@@ -278,6 +247,37 @@ public class MoshiTests
 		Assert.assertTrue(multiPolygon is MultiPolygon)
 
 		Assert.assertEquals(2, multiPolygon!!.coordinates.size)
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun itShouldSerializeMultiPolygon()
+	{
+		val multiPolygon = MultiPolygon()
+		multiPolygon.coordinates.add(Polygon(arrayListOf(
+			LngLatAlt(102.0, 2.0),
+			LngLatAlt(103.0, 2.0),
+			LngLatAlt(103.0, 3.0),
+			LngLatAlt(102.0, 3.0),
+			LngLatAlt(102.0, 2.0)
+		)).coordinates)
+
+		val polygon = Polygon(arrayListOf(
+			LngLatAlt(100.0, 0.0), LngLatAlt(101.0, 0.0),
+			LngLatAlt(101.0, 1.0), LngLatAlt(100.0, 1.0),
+			LngLatAlt(100.0, 0.0)
+		))
+		polygon.addInteriorRing(arrayListOf(
+			LngLatAlt(100.2, 0.2), LngLatAlt(100.8, 0.2),
+			LngLatAlt(100.8, 0.8), LngLatAlt(100.2, 0.8),
+			LngLatAlt(100.2, 0.2)
+		))
+		multiPolygon.coordinates.add(polygon.coordinates)
+		Assert.assertEquals(
+			"{\"coordinates\":[[[[102.0,2.0],[103.0,2.0],[103.0,3.0],[102.0,3.0],[102.0,2.0]]],"
+			+ "[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],"
+			+ "[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]],\"type\":\"MultiPolygon\"}",
+		moshi.adapter(GeoJsonObject::class.java).toJson(multiPolygon))
 	}
 
 //	@Test
