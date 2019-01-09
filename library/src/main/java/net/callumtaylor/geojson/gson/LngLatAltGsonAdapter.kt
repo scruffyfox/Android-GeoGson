@@ -1,20 +1,13 @@
 package net.callumtaylor.geojson.gson
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonParseException
-import com.google.gson.JsonPrimitive
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
+import com.google.gson.*
 import net.callumtaylor.geojson.LngLatAlt
 import java.lang.reflect.Type
 
 /**
  * LngLatAlt de-serialization in Gson
  */
-open class LngLatAltAdapter : JsonSerializer<LngLatAlt>, JsonDeserializer<LngLatAlt>
+open class LngLatAltGsonAdapter : JsonSerializer<LngLatAlt>, JsonDeserializer<LngLatAlt>
 {
 	override fun serialize(src: LngLatAlt, typeOfSrc: Type, context: JsonSerializationContext): JsonElement
 	{

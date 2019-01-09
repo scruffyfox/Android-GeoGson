@@ -37,6 +37,26 @@ public class MoshiTests
 
 	@Test
 	@Throws(Exception::class)
+	fun testForeignKeys()
+	{
+		val point = moshi.adapter(GeoJsonObject::class.java).fromJson("""
+			{
+				"type": "Point",
+				"coordinates": [100,5],
+				"key": "value",
+				"abc": "def"
+			}
+		""")
+		Assert.assertTrue(point is Point)
+		Assert.assertNotNull(point!!.foreign)
+		Assert.assertNotNull(point.foreign!!["key"])
+		Assert.assertNotNull(point.foreign!!["abc"])
+		Assert.assertEquals("value", point.foreign!!["key"])
+		Assert.assertEquals("def", point.foreign!!["abc"])
+	}
+
+	@Test
+	@Throws(Exception::class)
 	fun itShouldDeserializeAPoint()
 	{
 		val value = moshi.adapter(Point::class.java).fromJson("{\"type\":\"Point\",\"coordinates\":[100.0,5.0]}")

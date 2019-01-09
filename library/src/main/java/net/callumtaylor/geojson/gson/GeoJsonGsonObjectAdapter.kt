@@ -1,26 +1,10 @@
 package net.callumtaylor.geojson.gson
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
-import net.callumtaylor.geojson.Circle
-import net.callumtaylor.geojson.Feature
-import net.callumtaylor.geojson.FeatureCollection
-import net.callumtaylor.geojson.GeoGson
-import net.callumtaylor.geojson.GeoJsonObject
-import net.callumtaylor.geojson.GeometryCollection
-import net.callumtaylor.geojson.LineString
-import net.callumtaylor.geojson.MultiLineString
-import net.callumtaylor.geojson.MultiPoint
-import net.callumtaylor.geojson.MultiPolygon
-import net.callumtaylor.geojson.Point
-import net.callumtaylor.geojson.Polygon
+import com.google.gson.*
+import net.callumtaylor.geojson.*
 import java.lang.reflect.Type
 
-open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserializer<GeoJsonObject>
+open class GeoJsonGsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserializer<GeoJsonObject>
 {
 	private val types = mapOf(
 		"Circle" to Circle::class.java,
@@ -39,11 +23,11 @@ open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserialize
 	{
 		var cls: Class<out GeoJsonObject>? = types[src?.type ?: ""]
 
-		if (GeoGson.ignoreTypeCase && cls == null)
+		if (cls == null)
 		{
 			for (it in types)
 			{
-				if (it.key.equals(src?.type, true))
+				if (it.key == src?.type)
 				{
 					cls = it.value
 					break
@@ -63,11 +47,11 @@ open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserialize
 		var type = jsonObject?.get("type")?.asString
 		var cls: Class<out GeoJsonObject>? = types[type ?: ""]
 
-		if (GeoGson.ignoreTypeCase && cls == null)
+		if (cls == null)
 		{
 			for (it in types)
 			{
-				if (it.key.equals(type, true))
+				if (it.key == type)
 				{
 					cls = it.value
 					break
@@ -78,8 +62,6 @@ open class GeoJsonObjectAdapter : JsonSerializer<GeoJsonObject>, JsonDeserialize
 		val builder = GsonBuilder()
 		GeoGson.registerAdapters(builder)
 
-		val geoObject = builder.create().fromJson(json, cls)
-
-		return geoObject
+		return builder.create().fromJson<GeoJsonObject>(json, cls)
 	}
 }

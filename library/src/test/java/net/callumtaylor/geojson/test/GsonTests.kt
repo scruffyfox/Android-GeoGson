@@ -15,7 +15,6 @@ public class GsonTests
 	{
 		val point = Point(100.0, 0.0)
 		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", gson.toJson(point))
-//		Assert.assertEquals("{\"coordinates\":[100.0,0.0],\"type\":\"Point\"}", moshi.adapter(GeoJsonObject::class.java).toJson(point))
 	}
 
 	@Test
