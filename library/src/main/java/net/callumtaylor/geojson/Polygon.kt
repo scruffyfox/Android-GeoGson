@@ -46,6 +46,4 @@ open class Polygon() : Geometry<ArrayList<LngLatAlt>>()
 			throw RuntimeException("No exterior ring defined")
 		}
 	}
-
-	operator fun contains(point: Point): Boolean = GeoGson.pointInPolygon(coordinates, point)
 }

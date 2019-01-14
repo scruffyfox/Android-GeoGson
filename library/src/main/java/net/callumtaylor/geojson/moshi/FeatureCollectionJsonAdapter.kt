@@ -1,6 +1,11 @@
 package net.callumtaylor.geojson.moshi
 
-import com.squareup.moshi.*
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.ToJson
 import net.callumtaylor.geojson.Feature
 import net.callumtaylor.geojson.FeatureCollection
 import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter.Companion.OPTIONS
@@ -45,6 +50,11 @@ class FeatureCollectionJsonAdapter : JsonAdapter<FeatureCollection>()
 			}
 		}
 		reader.endObject()
+
+		if (feature.features.isEmpty())
+		{
+			throw JsonDataException("Feature array empty at ${reader.path}")
+		}
 
 		if (type != "FeatureCollection")
 		{

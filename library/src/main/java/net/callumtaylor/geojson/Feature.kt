@@ -3,7 +3,7 @@ package net.callumtaylor.geojson
 import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 
-open class Feature : GeoJsonObject()
+open class Feature() : GeoJsonObject()
 {
 	@field:Json(name = "geometry")
 	@SerializedName("geometry")

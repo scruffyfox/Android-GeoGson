@@ -3,8 +3,18 @@ package net.callumtaylor.geojson.moshi
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import net.callumtaylor.geojson.*
-import java.util.*
+import net.callumtaylor.geojson.Circle
+import net.callumtaylor.geojson.Feature
+import net.callumtaylor.geojson.FeatureCollection
+import net.callumtaylor.geojson.GeoJsonObject
+import net.callumtaylor.geojson.GeometryCollection
+import net.callumtaylor.geojson.LineString
+import net.callumtaylor.geojson.MultiLineString
+import net.callumtaylor.geojson.MultiPoint
+import net.callumtaylor.geojson.MultiPolygon
+import net.callumtaylor.geojson.Point
+import net.callumtaylor.geojson.Polygon
+import java.util.HashMap
 
 open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 {
@@ -30,27 +40,22 @@ open class GeoJsonObjectMoshiAdapter() : JsonAdapter<GeoJsonObject>()
 	{
 		var type = ""
 		val dataReader = reader.peekJson()
-		reader.beginObject()
-		read@ while (reader.hasNext())
-		{
-			when (reader.selectName(JsonReader.Options.of(*OPTIONS)))
-			{
-				0 -> {
-					type = reader.nextString()
-				}
-				else -> {
-					if (reader.peek() == JsonReader.Token.NAME)
-					{
-						reader.skipName()
-					}
 
-					reader.skipValue()
+		dataReader.beginObject()
+		while (dataReader.hasNext())
+		{
+			when (dataReader.selectName(JsonReader.Options.of("type")))
+			{
+				0 -> type = dataReader.nextString()
+				-1 -> {
+					dataReader.skipName()
+					dataReader.skipValue()
 				}
 			}
 		}
+		dataReader.endObject()
 
-		reader.endObject()
-		return types[type]?.fromJson(dataReader) as GeoJsonObject?
+		return types[type]?.fromJson(reader) as GeoJsonObject?
 	}
 
 	override fun toJson(writer: JsonWriter, value: GeoJsonObject?)

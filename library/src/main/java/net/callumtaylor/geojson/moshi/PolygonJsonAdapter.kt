@@ -1,6 +1,11 @@
 package net.callumtaylor.geojson.moshi
 
-import com.squareup.moshi.*
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.ToJson
 import net.callumtaylor.geojson.LngLatAlt
 import net.callumtaylor.geojson.Polygon
 import net.callumtaylor.geojson.moshi.GeoJsonObjectMoshiAdapter.Companion.OPTIONS
@@ -46,7 +51,7 @@ class PolygonJsonAdapter : JsonAdapter<Polygon>()
 		}
 		reader.endObject()
 
-		if (position == null)
+		if (position == null || position.isEmpty())
 		{
 			throw JsonDataException("Required positions are missing at ${reader.path}")
 		}
