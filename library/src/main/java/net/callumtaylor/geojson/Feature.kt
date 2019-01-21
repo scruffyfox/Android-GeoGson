@@ -11,7 +11,7 @@ open class Feature() : GeoJsonObject()
 
 	@field:Json(name = "id")
 	@SerializedName("id")
-	var id: String = ""
+	var id: String? = null
 
 	init { type = "Feature" }
 }
