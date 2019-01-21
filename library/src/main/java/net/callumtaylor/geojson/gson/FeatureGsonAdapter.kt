@@ -2,19 +2,58 @@ package net.callumtaylor.geojson.gson
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import net.callumtaylor.geojson.Feature
-import net.callumtaylor.geojson.GeoGson
-import net.callumtaylor.geojson.GeoJsonObject
+import net.callumtaylor.geojson.*
 import java.lang.reflect.Type
 
 open class FeatureGsonAdapter : JsonSerializer<GeoJsonObject>, JsonDeserializer<GeoJsonObject>
 {
+	private val types = mapOf(
+		"Circle" to Circle::class.java,
+		"Feature" to Feature::class.java,
+		"FeatureCollection" to FeatureCollection::class.java,
+		"GeometryCollection" to GeometryCollection::class.java,
+		"LineString" to LineString::class.java,
+		"MultiLineString" to MultiLineString::class.java,
+		"Point" to Point::class.java,
+		"MultiPoint" to MultiPoint::class.java,
+		"Polygon" to Polygon::class.java,
+		"MultiPolygon" to MultiPolygon::class.java
+	)
+
 	override fun serialize(src: GeoJsonObject?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement
 	{
 		val builder = GsonBuilder()
 		GeoGson.registerAdapters(builder)
 
-		return builder.create().toJsonTree(src, Feature::class.java)
+		if (src is Feature)
+		{
+			val gson = builder.create()
+			val geometry = gson.toJsonTree(src.geometry, types[src.geometry.type])
+			val jsonTree = JsonObject()
+
+			jsonTree.addProperty("type", "Feature")
+			jsonTree.add("geometry", geometry)
+
+			src.properties?.let {
+				jsonTree.add("properties", gson.toJsonTree(it))
+			}
+
+			src.foreign?.let {
+				it.forEach { k, v ->
+					jsonTree.add(k, gson.toJsonTree(v))
+				}
+			}
+
+			src.id?.let {
+				jsonTree.addProperty("id", it)
+			}
+
+			return jsonTree
+		}
+		else
+		{
+			return builder.create().toJsonTree(src, typeOfSrc)
+		}
 	}
 
 	override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): GeoJsonObject

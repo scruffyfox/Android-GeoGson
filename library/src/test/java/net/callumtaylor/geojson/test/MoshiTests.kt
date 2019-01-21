@@ -1,19 +1,7 @@
 package net.callumtaylor.geojson.test
 
 import com.squareup.moshi.Moshi
-import net.callumtaylor.geojson.Circle
-import net.callumtaylor.geojson.Feature
-import net.callumtaylor.geojson.FeatureCollection
-import net.callumtaylor.geojson.GeoJsonObject
-import net.callumtaylor.geojson.GeoMoshi
-import net.callumtaylor.geojson.GeometryCollection
-import net.callumtaylor.geojson.LineString
-import net.callumtaylor.geojson.LngLatAlt
-import net.callumtaylor.geojson.MultiLineString
-import net.callumtaylor.geojson.MultiPoint
-import net.callumtaylor.geojson.MultiPolygon
-import net.callumtaylor.geojson.Point
-import net.callumtaylor.geojson.Polygon
+import net.callumtaylor.geojson.*
 import org.junit.Assert
 import org.junit.Test
 
@@ -54,6 +42,49 @@ public class MoshiTests
 
 		val geometryCollection = moshi.adapter(GeoJsonObject::class.java).fromJson(GeoJsonData.geometryCollectionJson)
 		Assert.assertTrue(geometryCollection is GeometryCollection)
+	}
+
+	@Test
+	fun testFeatureForeign()
+	{
+		val str = """
+			{
+				"type": "FeatureCollection",
+				"features": [{
+					"type": "Feature",
+					"geometry": {
+						"type": "Point",
+						"coordinates": [-1.90255, 50.7689]
+					},
+					"properties": {
+						"direction": "outbound",
+						"line": "5"
+					},
+					"_embedded": {
+						"line": {
+							"id": "5",
+							"name": "5",
+							"title": "5",
+							"description": "Test model",
+							"colors": {
+								"background": "#149934",
+								"foreground": "#FFFFFF"
+							},
+							"href": "http://google.com"
+						}
+					}
+				}]
+			}
+		"""
+		val json = moshi.adapter(GeoJsonObject::class.java).fromJson(str)
+		Assert.assertTrue(json is FeatureCollection)
+		Assert.assertTrue((json as FeatureCollection).features[0].foreign!!["_embedded"] != null)
+		Assert.assertTrue(((json as FeatureCollection).features[0].foreign!!["_embedded"] as Map<String, *>)["line"] != null)
+
+		val map = (((json as FeatureCollection).features[0].foreign!!["_embedded"] as Map<String, *>)["line"] as Map<String, *>)
+		Assert.assertEquals("5", map["id"])
+		Assert.assertTrue(map["colors"] is Map<*, *>)
+		Assert.assertEquals("#149934", (map["colors"] as Map<*, *>)["background"])
 	}
 
 	@Test
