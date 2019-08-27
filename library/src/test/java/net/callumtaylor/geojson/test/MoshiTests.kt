@@ -40,8 +40,22 @@ public class MoshiTests
 		val featureCollection = moshi.adapter(GeoJsonObject::class.java).fromJson(GeoJsonData.featureCollectionJson)
 		Assert.assertTrue(featureCollection is FeatureCollection)
 
+		val emptyFeatureCollection = moshi.adapter(GeoJsonObject::class.java).fromJson(GeoJsonData.emptyFeatureCollectionJson)
+		Assert.assertTrue(emptyFeatureCollection is FeatureCollection)
+
 		val geometryCollection = moshi.adapter(GeoJsonObject::class.java).fromJson(GeoJsonData.geometryCollectionJson)
 		Assert.assertTrue(geometryCollection is GeometryCollection)
+	}
+
+	@Test
+	fun testEmptyFeatureCollection()
+	{
+		val feature = moshi.adapter(FeatureCollection::class.java).fromJson(GeoJsonData.emptyFeatureCollectionJson)
+
+		Assert.assertNotNull(feature)
+		Assert.assertTrue(feature is FeatureCollection)
+		Assert.assertNotNull(feature!!.features)
+		Assert.assertEquals(0, feature.features.size)
 	}
 
 	@Test

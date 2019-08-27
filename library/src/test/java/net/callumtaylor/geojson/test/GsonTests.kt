@@ -10,6 +10,17 @@ public class GsonTests
 	private val gson = GeoGson.registerAdapters(GsonBuilder()).create()
 
 	@Test
+	fun testEmptyFeatureCollection()
+	{
+		val feature = gson.fromJson(GeoJsonData.emptyFeatureCollectionJson, FeatureCollection::class.java)
+
+		Assert.assertNotNull(feature)
+		Assert.assertTrue(feature is FeatureCollection)
+		Assert.assertNotNull(feature!!.features)
+		Assert.assertEquals(0, feature.features.size)
+	}
+
+	@Test
 	@Throws(Exception::class)
 	fun intelligentDeserialisation()
 	{
@@ -39,6 +50,9 @@ public class GsonTests
 
 		val featureCollection = gson.fromJson(GeoJsonData.featureCollectionJson, GeoJsonObject::class.java)
 		Assert.assertTrue(featureCollection is FeatureCollection)
+
+		val emptyFeatureCollection = gson.fromJson(GeoJsonData.emptyFeatureCollectionJson, GeoJsonObject::class.java)
+		Assert.assertTrue(emptyFeatureCollection is FeatureCollection)
 
 		val geometryCollection = gson.fromJson(GeoJsonData.geometryCollectionJson, GeoJsonObject::class.java)
 		Assert.assertTrue(geometryCollection is GeometryCollection)

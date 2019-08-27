@@ -20,11 +20,11 @@ dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
-task copyTestClasses(type: Copy) {
-	from "build/tmp/kotlin-classes/debugUnitTest"
-	into "build/intermediates/classes/debug"
-	println "COPYING CLASSES"
-}
-
-assemble.dependsOn copyTestClasses
+//task copyTestClasses(type: Copy) {
+//	from "build/tmp/kotlin-classes/debugUnitTest"
+//	into "build/intermediates/classes/debug"
+//	println "COPYING CLASSES"
+//}
+//
+//assemble.dependsOn copyTestClasses
 apply from: '../gradle/sonatype.gradle'
