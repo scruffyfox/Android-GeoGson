@@ -1,17 +1,30 @@
-apply plugin: 'java'
+apply plugin: 'kotlin'
 
 repositories {
 	mavenCentral()
 }
 
 compileJava {
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 }
 
 dependencies {
-	compile "com.google.code.gson:gson:2.8.5"
-	testCompile "junit:junit:4.12"
+	implementation "com.google.code.gson:gson:2.8.5"
+	implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
+
+	testCompile 'junit:junit:4.12'
+	testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
+//task copyTestClasses(type: Copy) {
+//	from "build/tmp/kotlin-classes/debugUnitTest"
+//	into "build/intermediates/classes/debug"
+//	println "COPYING CLASSES"
+//}
+//
+//assemble.dependsOn copyTestClasses
 apply from: '../gradle/sonatype.gradle'

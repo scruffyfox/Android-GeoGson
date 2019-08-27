@@ -1,17 +1,47 @@
 # GeoGson
 
-GeoGson is a Gson implementation of the GeoJson specification (with some unofficial object support)
+GeoGson is a Gson and Moshi implementation of the GeoJson specification (with some unofficial object support)
 
 ## Types supported
 
 1. Circle (unofficial support)
 1. Feature
+1. FeatureCollection
 1. LineString
 1. MultiLineString
 1. Polygon
 1. MultiPolygon
 1. Point
 1. MultiPoint
+1. GeometryCollection
+
+## Usage with Moshi
+Simply pass your moshi builder to `GeoMoshi.registerAdapters()`, or use the following code to register the adapters manually
+
+```kotlin
+	Moshi.Builder().add(Point::class.java, PointJsonAdapter())
+	.add(Circle::class.java, CircleJsonAdapter())
+	.add(MultiPoint::class.java, MultiPointJsonAdapter())
+	.add(LineString::class.java, LineStringJsonAdapter())
+	.add(MultiLineString::class.java, MultiLineStringJsonAdapter())
+	.add(Polygon::class.java, PolygonJsonAdapter())
+	.add(MultiPolygon::class.java, MultiPolygonJsonAdapter())
+	.add(Feature::class.java, FeatureJsonAdapter())
+	.add(FeatureCollection::class.java, FeatureCollectionJsonAdapter())
+	.add(GeometryCollection::class.java, GeometryCollectionJsonAdapter())
+	.add(GeoJsonObject::class.java, GeoJsonObjectMoshiAdapter())
+	.add(LngLatAlt::class.java, LngLatAltMoshiAdapter())
+	.build()
+```
+
+To deserialise json, you can either deserialise to a known class type, or use `GeoJsonObject` as the class type and it will auto decode into the correct object, but will return as type `GeoJsonObject`
+
+example:
+
+```kotlin
+GeoMoshi.registerAdapters(Moshi.Builder()).build()
+	.adapter(GeoJsonObject::class.java).fromJson(/* json */)
+```
 
 ## Usage with custom gson parsers
 
@@ -47,7 +77,7 @@ This will automatically parse the provided JSON string into its correct class (i
 To include the project, add the following to your `build.gradle`
 
 ```
-compile 'net.callumtaylor:geogson:1.0'
+compile 'net.callumtaylor:geogson:2.0.2'
 ```
 
 ## License
